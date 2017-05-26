@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'omniauth'
+gem 'omniauth-okta', :path => '../../'
+gem 'multi_json'

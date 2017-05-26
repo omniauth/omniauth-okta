@@ -5,8 +5,7 @@ module Omniauth
 
     class Okta < OmniAuth::Strategies::OAuth2
 
-      AUTHENTICATION_PARAMETERS = %w(display account state scope)
-      BASE_URL = 'https://oktathinger.com'.freeze
+      BASE_URL = "https://#{ORG}.okta.com/api/v1/authn"
 
       option :name, 'okta'
 
