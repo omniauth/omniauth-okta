@@ -1,6 +1,6 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-require "omniauth/okta/version"
+require "omniauth-okta/version"
 
 Gem::Specification.new do |s|
   s.name          = "omniauth-okta"
@@ -17,10 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth", "~> 1.0"
   s.add_dependency "omniauth-oauth2", "~> 1.0"
 
-  spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec", "~> 2.7"
-  spec.add_development_dependency "rack-test"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "webmock"
+  s.add_development_dependency "bundler", "~> 1.5"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec", "~> 2.7"
+  s.add_development_dependency "rack-test"
 end
