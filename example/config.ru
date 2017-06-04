@@ -1,3 +1,9 @@
+# frozen_string_literal: true
+
+# Sample app for Okta OAuth2 Strategy
+# Make sure to setup the ENV variables OKTA_CLIENT_ID and OKTA_CLIENT_SECRET
+# Run with "bundle exec rackup"
+
 require 'bundler/setup'
 require 'sinatra/base'
 require 'omniauth-okta'
