@@ -63,16 +63,9 @@ Make sure your model is omniauthable. Generally this is "/app/models/user.rb"
 devise :omniauthable, omniauth_providers: [:okta]
 ```
 
-## Contributing
+## Auth Hash
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-## License
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+Here's an example of an authentication hash available in the callback by accessing `request.env['omniauth.auth']`:
 
 ```ruby
 {
@@ -121,3 +114,15 @@ The gem is available as open source under the terms of the [MIT License](http://
   }
 }
 ```
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+## License
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
