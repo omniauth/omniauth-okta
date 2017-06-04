@@ -73,3 +73,51 @@ devise :omniauthable, omniauth_providers: [:okta]
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+```ruby
+{
+  "provider" => "okta",
+  "uid" => "0000000000000001",
+  "info" => {
+    "name" => "John Smith",
+    "email" => "john@example.com",
+    "first_name" => "John",
+    "last_name" => "Smith",
+    "image" => "https://photohosting.com/john.jpg"
+  },
+  "credentials" => {
+    "token" => "TOKEN",
+    "expires_at" => 1496617411,
+    "expires" => true
+  },
+  "extra" => {
+    "raw_info" => {
+      "sub" => "0000000000000001",
+      "name" => "John Smith",
+      "locale" => "en-US",
+      "email" => "john@example.com",
+      "picture" => "https://photohosting.com/john.jpg",
+      "website" => "https://example.com",
+      "preferred_username" => "john@example.com",
+      "given_name" => "John",
+      "family_name" => "Smith",
+      "zoneinfo" => "America/Los_Angeles",
+      "updated_at" => 1496611646,
+      "email_verified" => true
+    },
+    "id_token" => "TOKEN",
+    "id_info" => {
+      "ver" => 1,
+      "jti" => "AT.Dr2slfkj34wsdfsds2xw2584l3on090sldkfj",
+      "iss" => "https://your-org.okta.com",
+      "aud" => "https://your-org.okta.com",
+      "sub" => "john@example.com",
+      "iat" => 1496613811,
+      "exp" => 1496617411,
+      "cid" => "CLIENT_ID",
+      "uid" => "0000000000000001",
+      "scp" => ["email", "profile", "openid"]
+    }
+  }
+}
+```

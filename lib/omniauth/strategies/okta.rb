@@ -32,13 +32,14 @@ module OmniAuth
           name:       raw_info['name'],
           email:      raw_info['email'],
           first_name: raw_info['given_name'],
-          last_name:  raw_info['family_name']
+          last_name:  raw_info['family_name'],
+          image:      raw_info['picture']
         }
       end
 
       extra do
         hash = {}
-        hash[:raw_info] = raw_info
+        hash[:raw_info] = raw_info unless skip_info?
         hash[:id_token] = access_token.token
         if !options[:skip_jwt] && !access_token.token.nil?
           hash[:id_info] = validated_token(access_token.token)
@@ -56,7 +57,7 @@ module OmniAuth
       end
 
       def raw_info
-        @_raw_info ||= access_token.get('/oauth2/v1/userinfo').parsed
+        @_raw_info ||= access_token.get('/oauth2/v1/userinfo').parsed || {}
       rescue ::Errno::ETIMEDOUT
         raise ::Timeout::Error
       end
