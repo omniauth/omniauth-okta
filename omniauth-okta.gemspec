@@ -4,7 +4,7 @@ require "omniauth-okta/version"
 
 Gem::Specification.new do |s|
   s.name          = "omniauth-okta"
-  s.version       = Omniauth::Okta::VERSION
+  s.version       = OmniAuth::Okta::VERSION
   s.authors       = ["Dan Andrews"]
   s.email         = ["daniel.andrews@techstars.com"]
   s.homepage      = ""

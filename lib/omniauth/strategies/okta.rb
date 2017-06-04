@@ -1,33 +1,49 @@
+# frozen_string_literal: true
+
 require 'omniauth-oauth2'
 
-module Omniauth
+module OmniAuth
   module Strategies
     class Okta < OmniAuth::Strategies::OAuth2
 
-      ORG = 'techstars'
-      DOMAIN = 'oktapreview'
-      BASE_URL = "https://#{ORG}.#{DOMAIN}.com"
+      ORG           = ENV['OKTA_ORG']    || 'your-org'
+      DOMAIN        = ENV['OKTA_DOMAIN'] || 'okta'
+      BASE_URL      = "https://#{ORG}.#{DOMAIN}.com"
+      DEFAULT_SCOPE = %[openid profile email].freeze
 
       option :name, 'okta'
 
+      option :skip_jwt, false
+      option :jwt_leeway, 60
+
       option :client_options, {
-        :site => BASE_URL,
-        :authorize_url => "#{BASE_URL}/oauth2/v1/authorize",
-        :token_url => "#{BASE_URL}/oauth2/v1/token",
-        :response_type => 'id_token',
-        :client_id => 'nxww2IW6uB51i76PJGrq',
+        site:          BASE_URL,
+        authorize_url: "#{BASE_URL}/oauth2/v1/authorize",
+        token_url:     "#{BASE_URL}/oauth2/v1/token",
+        response_type: 'id_token'
       }
 
-      option :scope, 'openid profile email'
+      option :scope, DEFAULT_SCOPE
 
-      uid { info['sub'] }
+      uid { raw_info['sub'] }
 
       info do
-        raw_info.parsed
+        {
+          name:       raw_info['name'],
+          email:      raw_info['email'],
+          first_name: raw_info['given_name'],
+          last_name:  raw_info['family_name']
+        }
       end
 
       extra do
-        { :raw_info => raw_info }
+        hash = {}
+        hash[:raw_info] = raw_info
+        hash[:id_token] = access_token.token
+        if !options[:skip_jwt] && !access_token.token.nil?
+          hash[:id_info] = validated_token(access_token.token)
+        end
+        hash
       end
 
       alias :oauth2_access_token :access_token
@@ -40,7 +56,9 @@ module Omniauth
       end
 
       def raw_info
-        @_raw_info ||= access_token.get('/oauth2/v1/userinfo')
+        @_raw_info ||= access_token.get('/oauth2/v1/userinfo').parsed
+      rescue ::Errno::ETIMEDOUT
+        raise ::Timeout::Error
       end
 
       def request_phase
@@ -53,6 +71,23 @@ module Omniauth
 
       def callback_url
         options[:redirect_uri] || (full_host + script_name + callback_path)
+      end
+
+      def validated_token(token)
+        JWT.decode(token,
+                   nil,
+                   false,
+                   verify_iss:        true,
+                   iss:               BASE_URL,
+                   verify_aud:        true,
+                   aud:               BASE_URL,
+                   verify_sub:        true,
+                   verify_expiration: true,
+                   verify_not_before: true,
+                   verify_iat:        true,
+                   verify_jti:        false,
+                   leeway:            options[:jwt_leeway]
+                   ).first
       end
     end
   end
