@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe OmniAuth::Strategies::Okta do
@@ -41,13 +43,9 @@ describe OmniAuth::Strategies::Okta do
     end
   end
 
-  describe '#scope' do
-    it { expect(subject.authorize_params[:scope]).to eq('email') }
-  end
-
   describe '#uid' do
     before :each do
-      # allow(subject).to receive(:raw_info) { { 'id' => 'uid' } }
+      allow(subject).to receive(:raw_info) { { 'sub' => 'uid' } }
     end
 
     it 'returns the id from raw_info' do
@@ -60,19 +58,26 @@ describe OmniAuth::Strategies::Okta do
       allow(subject).to receive(:raw_info) { {} }
     end
 
-    context 'and therefore has all the necessary fields' do
+    context 'has the necessary fields' do
       it { expect(subject.info).to have_key :name }
       it { expect(subject.info).to have_key :email }
-      it { expect(subject.info).to have_key :nickname }
       it { expect(subject.info).to have_key :first_name }
       it { expect(subject.info).to have_key :last_name }
-      it { expect(subject.info).to have_key :location }
-      it { expect(subject.info).to have_key :description }
       it { expect(subject.info).to have_key :image }
-      it { expect(subject.info).to have_key :urls }
     end
   end
 
-  describe '#extra' do
+  describe 'extra' do
+    before :each do
+      allow(subject).to receive(:raw_info) { { :foo => 'bar' } }
+    end
+
+    it { expect(subject.extra['raw_info']).to eq({ :foo => 'bar' }) }
+  end
+
+  describe 'id_token' do
+  end
+
+  describe 'raw_info' do
   end
 end
