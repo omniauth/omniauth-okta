@@ -20,6 +20,15 @@ Or install it yourself as:
 $ gem install omniauth-okta
 ```
 
+### Environment Variables
+
+```bash
+OKTA_CLIENT_ID     # required
+OKTA_CLIENT_SECRET # required
+OKTA_ORG           # required - defaults to 'your-org' if unset
+OKTA_DOMAIN        # optional - defaults to 'okta.com' if unset
+```
+
 ### OmniAuth
 
 Here's an example for adding the middleware to a Rails app in `config/initializers/omniauth.rb`:
@@ -37,15 +46,15 @@ First define your application id and secret in `config/initializers/devise.rb`.
 Configuration options can be passed as the last parameter here as key/value pairs.
 
 ```ruby
-config.omniauth :okta, 'OKTA_CLIENT_ID', 'OKTA_CLIENT_SECRET', {}
+config.omniauth :okta, ENV['OKTA_CLIENT_ID'], ENV['OKTA_CLIENT_SECRET'], {}
 ```
 or add options like the following:
 
 ```ruby
   require 'omniauth-okta'
   config.omniauth(:okta,
-                  <OKTA_CLIENT_ID>,
-                  <OKTA_CLIENT_SECRET>,
+                  ENV['OKTA_CLIENT_ID'],
+                  ENV['OKTA_CLIENT_SECRET'],
                   :scope => 'openid profile email',
                   :fields => ['profile', 'email'],
                   :strategy_class => OmniAuth::Strategies::Okta)
@@ -101,7 +110,7 @@ Here's an example of an authentication hash available in the callback by accessi
     "id_token" => "TOKEN",
     "id_info" => {
       "ver" => 1,
-      "jti" => "AT.Dr2slfkj34wsdfsds2xw2584l3on090sldkfj",
+      "jti" => "AT.D2sslkfjdsldjf899n090sldkfj",
       "iss" => "https://your-org.okta.com",
       "aud" => "https://your-org.okta.com",
       "sub" => "john@example.com",
