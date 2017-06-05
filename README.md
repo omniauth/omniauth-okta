@@ -2,6 +2,8 @@
 
 Strategy to authenticate with Okta via OAuth2 in OmniAuth.
 
+This strategy uses Okta's OpenID Connect API with OAuth2. See their [developer docs](https://developer.okta.com/docs/api/resources/oidc.html) for more details.
+
 ## Installation
 
 Add this line to your application's Gemfile:
