@@ -22,22 +22,19 @@ Or install it yourself as:
 $ gem install omniauth-okta
 ```
 
-### Environment Variables
-
-```bash
-OKTA_CLIENT_ID     # required
-OKTA_CLIENT_SECRET # required
-OKTA_ORG           # required - defaults to 'your-org' if unset
-OKTA_DOMAIN        # optional - defaults to 'okta.com' if unset
-```
-
 ### OmniAuth
 
 Here's an example for adding the middleware to a Rails app in `config/initializers/omniauth.rb`:
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :okta, ENV['OKTA_CLIENT_ID'], ENV['OKTA_CLIENT_SECRET']
+  provider :okta, ENV['OKTA_CLIENT_ID'], ENV['OKTA_CLIENT_SECRET'], {
+    client_options: {
+      site:          'https://your-org.okta.com',
+      authorize_url: 'https://your-org.okta.com/oauth2/v1/authorize',
+      token_url:     'https://your-org.okta.com/oauth2/v1/token'
+    }
+  }
 end
 ```
 
@@ -59,6 +56,11 @@ or add options like the following:
                   ENV['OKTA_CLIENT_SECRET'],
                   :scope => 'openid profile email',
                   :fields => ['profile', 'email'],
+                  :client_options => {
+                    :site =>          'https://your-org.okta.com',
+                    :authorize_url => 'https://your-org.okta.com/oauth2/v1/authorize',
+                    :token_url =>     'https://your-org.okta.com/oauth2/v1/token'
+                  }
                   :strategy_class => OmniAuth::Strategies::Okta)
 ```
 
