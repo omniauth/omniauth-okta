@@ -70,9 +70,16 @@ describe OmniAuth::Strategies::Okta do
   describe 'extra' do
     before :each do
       allow(subject).to receive(:raw_info) { { :foo => 'bar' } }
+      allow(subject).to receive(:access_token)
+                          .and_return(
+                            instance_double(::OAuth2::AccessToken,
+                                            token:         nil,
+                                            refresh_token: 'token',
+                                            expires_in:    0,
+                                            expires_at:    0))
     end
 
-    it { expect(subject.extra['raw_info']).to eq({ :foo => 'bar' }) }
+    it { expect(subject.extra[:raw_info]).to eq({ :foo => 'bar' }) }
   end
 
   describe 'id_token' do
