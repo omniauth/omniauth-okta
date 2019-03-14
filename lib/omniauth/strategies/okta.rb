@@ -5,10 +5,6 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Okta < OmniAuth::Strategies::OAuth2
-
-      ORG           = ENV['OKTA_ORG']    || 'your-org'
-      DOMAIN        = ENV['OKTA_DOMAIN'] || 'okta'
-      BASE_URL      = "https://#{ORG}.#{DOMAIN}.com"
       DEFAULT_SCOPE = %[openid profile email].freeze
 
       option :name, 'okta'
@@ -17,9 +13,9 @@ module OmniAuth
       option :jwt_leeway, 60
 
       option :client_options, {
-        site:          BASE_URL,
-        authorize_url: "#{BASE_URL}/oauth2/v1/authorize",
-        token_url:     "#{BASE_URL}/oauth2/v1/token",
+        site:          'https://your-org.okta.com',
+        authorize_url: 'https://your-org.okta.com/oauth2/v1/authorize',
+        token_url:     'https://your-org.okta.com/oauth2/v1/token',
         response_type: 'id_token'
       }
 
@@ -80,9 +76,9 @@ module OmniAuth
                    nil,
                    false,
                    verify_iss:        true,
-                   iss:               BASE_URL,
+                   iss:               options[:client_options][:site],
                    verify_aud:        true,
-                   aud:               BASE_URL,
+                   aud:               options[:client_options][:site],
                    verify_sub:        true,
                    verify_expiration: true,
                    verify_not_before: true,
