@@ -61,8 +61,9 @@ or add options like the following:
                   fields: ['profile', 'email'],
                   client_options: {
                     site:          'https://your-org.okta.com',
-                    authorize_url: 'https://your-org.okta.com/oauth2/v1/authorize',
-                    token_url:     'https://your-org.okta.com/oauth2/v1/token'
+                    authorize_url: 'https://your-org.okta.com/oauth2/default/v1/authorize',
+                    token_url:     'https://your-org.okta.com/oauth2/default/v1/token',
+                    user_info_url: 'https://your-org.okta.com/oauth2/default/v1/userinfo',
                   },
                   strategy_class: OmniAuth::Strategies::Okta)
 ```
