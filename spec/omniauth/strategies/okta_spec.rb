@@ -21,12 +21,12 @@ describe OmniAuth::Strategies::Okta do
 
       it 'has default authorize url' do
         expect(subject.options.client_options.authorize_url).to \
-        eq("#{base_url}/oauth2/v1/authorize")
+        eq("#{base_url}/oauth2/default/v1/authorize")
       end
 
       it 'has default token url' do
         expect(subject.options.client_options.token_url).to \
-        eq("#{base_url}/oauth2/v1/token")
+        eq("#{base_url}/oauth2/default/v1/token")
       end
 
       it 'has default response_type' do
@@ -70,9 +70,16 @@ describe OmniAuth::Strategies::Okta do
   describe 'extra' do
     before :each do
       allow(subject).to receive(:raw_info) { { :foo => 'bar' } }
+      allow(subject).to receive(:access_token)
+                          .and_return(
+                            instance_double(::OAuth2::AccessToken,
+                                            token:         nil,
+                                            refresh_token: 'token',
+                                            expires_in:    0,
+                                            expires_at:    0))
     end
 
-    it { expect(subject.extra['raw_info']).to eq({ :foo => 'bar' }) }
+    it { expect(subject.extra[:raw_info]).to eq({ :foo => 'bar' }) }
   end
 
   describe 'id_token' do

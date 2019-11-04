@@ -30,9 +30,12 @@ Here's an example for adding the middleware to a Rails app in `config/initialize
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :okta, ENV['OKTA_CLIENT_ID'], ENV['OKTA_CLIENT_SECRET'], {
     client_options: {
-      site:          'https://your-org.okta.com',
-      authorize_url: 'https://your-org.okta.com/oauth2/v1/authorize',
-      token_url:     'https://your-org.okta.com/oauth2/v1/token'
+      site:                 'https://your-org.okta.com',
+      authorization_server: '<authorization_server>',
+      authorize_url:        'https://your-org.okta.com/oauth2/<authorization_server>/v1/authorize',
+      token_url:            'https://your-org.okta.com/oauth2/<authorization_server>/v1/token',
+      user_info_url:        'https://your-org.okta.com/oauth2/<authorization_server>/v1/userinfo',
+      audience:             'api://your-audience'
     }
   }
 end
@@ -54,14 +57,15 @@ or add options like the following:
   config.omniauth(:okta,
                   ENV['OKTA_CLIENT_ID'],
                   ENV['OKTA_CLIENT_SECRET'],
-                  :scope => 'openid profile email',
-                  :fields => ['profile', 'email'],
-                  :client_options => {
-                    :site =>          'https://your-org.okta.com',
-                    :authorize_url => 'https://your-org.okta.com/oauth2/v1/authorize',
-                    :token_url =>     'https://your-org.okta.com/oauth2/v1/token'
-                  }
-                  :strategy_class => OmniAuth::Strategies::Okta)
+                  scope: 'openid profile email',
+                  fields: ['profile', 'email'],
+                  client_options: {
+                    site:          'https://your-org.okta.com',
+                    authorize_url: 'https://your-org.okta.com/oauth2/default/v1/authorize',
+                    token_url:     'https://your-org.okta.com/oauth2/default/v1/token',
+                    user_info_url: 'https://your-org.okta.com/oauth2/default/v1/userinfo',
+                  },
+                  strategy_class: OmniAuth::Strategies::Okta)
 ```
 
 Then add the following to 'config/routes.rb' so the callback routes are defined.

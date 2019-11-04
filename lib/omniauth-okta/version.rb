@@ -2,6 +2,6 @@
 
 module OmniAuth
   module Okta
-    VERSION = '0.1.1'
+    VERSION = '0.1.2'.freeze
   end
 end
