@@ -3,10 +3,11 @@
 require 'spec_helper'
 
 describe OmniAuth::Strategies::Okta do
-
+  include OmniAuth::Test::StrategyTestCase
   subject { described_class.new({}) }
 
   let(:base_url) { 'https://your-org.okta.com' }
+  let(:strategy) { described_class }
 
   describe '#client' do
     it 'has default site' do
@@ -38,8 +39,9 @@ describe OmniAuth::Strategies::Okta do
 
   describe '#callback_path' do
     it 'has the correct callback path' do
-      expect(subject.callback_path).to \
-      eq('/auth/okta/callback')
+      post '/auth/okta'
+      expect(last_response.location).to \
+      eq('http://example.org/auth/okta/callback')
     end
   end
 
