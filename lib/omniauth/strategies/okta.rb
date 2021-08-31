@@ -40,10 +40,10 @@ module OmniAuth
           h[:raw_info] = raw_info unless skip_info?
 
           if access_token
-            h[:id_token] = access_token.token
+            h[:id_token] = oauth2_access_token['id_token']
 
-            if !options[:skip_jwt] && !access_token.token.nil?
-              h[:id_info] = validated_token(access_token.token)
+            if !options[:skip_jwt] && !h[:id_token].nil?
+              h[:id_info] = validated_token(h[:id_token])
             end
           end
         end
