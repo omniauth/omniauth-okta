@@ -70,6 +70,8 @@ describe OmniAuth::Strategies::Okta do
   end
 
   describe 'extra' do
+    subject { described_class.new('app', skip_jwt: true) }
+
     before :each do
       allow(subject).to receive(:raw_info) { { :foo => 'bar' } }
       allow(subject).to receive(:access_token)
@@ -79,12 +81,24 @@ describe OmniAuth::Strategies::Okta do
                                             refresh_token: 'token',
                                             expires_in:    0,
                                             expires_at:    0))
+      allow(subject).to receive(:oauth2_access_token)
+                        .and_return(
+                          ::OAuth2::AccessToken.new(
+                            'client',
+                            nil,
+                            refresh_token: 'token',
+                            expires_in:    0,
+                            expires_at:    0,
+                            'id_token' => 'id_token',
+                          ),
+                        )
     end
 
     it { expect(subject.extra[:raw_info]).to eq({ :foo => 'bar' }) }
-  end
 
-  describe 'id_token' do
+    describe 'id_token' do
+      it { expect(subject.extra[:id_token]).to eq('id_token') }
+    end
   end
 
   describe 'raw_info' do
