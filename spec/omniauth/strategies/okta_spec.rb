@@ -136,6 +136,14 @@ describe OmniAuth::Strategies::Okta do
     end
 
     it { expect(subject.id_token).to eq(id_token_string) }
+
+    context 'when access token is nil' do
+      before do
+        allow(subject).to receive(:access_token).and_return(nil)
+      end
+
+      it { expect(subject.id_token).to be_nil }
+    end
   end
 
   describe 'raw_info' do

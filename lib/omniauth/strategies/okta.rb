@@ -64,6 +64,8 @@ module OmniAuth
       end
 
       def id_token
+        return if access_token.nil?
+
         access_token['id_token']
       end
 
