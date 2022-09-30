@@ -19,7 +19,8 @@ module OmniAuth
         user_info_url:        'https://your-org.okta.com/oauth2/default/v1/userinfo',
         response_type:        'id_token',
         authorization_server: 'default',
-        audience:             'api://default'
+        audience:             'api://default',
+        use_org_auth_server:  false
       }
       option :scope, DEFAULT_SCOPE
 
@@ -74,10 +75,14 @@ module OmniAuth
       # This is necessary in the case where there is a custom authorization server.
       #
       # Okta provides a default, by default.
+      # There is also an option to use an org authorization server if a custom authorization server is not available
+      # in your Okta subscription, set a use_org_auth_server client option to true.
       #
       # @return [String]
       def authorization_server_path
-        site                 = client_options.fetch(:site)
+        site = client_options.fetch(:site)
+        return site if client_options.fetch(:use_org_auth_server)
+
         authorization_server = client_options.fetch(:authorization_server, 'default')
 
         "#{site}/oauth2/#{authorization_server}"
